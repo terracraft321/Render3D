@@ -15,21 +15,11 @@ class SoftwareRender:
         self.create_objects()
 
     def create_objects(self):
-        self.camera = Camera(self, [-5, 6, -55])
+        self.camera = Camera(self, [0.5, 1, -4])
         self.projection = Projection(self)
-        self.object = self.get_object_from_file('C:/Users/admin/OneDrive - University of Eastern Finland/Omat/Python/Render3D/resources/t_34_obj.obj')
-        self.object.rotate_y(-math.pi / 4)
-
-    def get_object_from_file(self, filename):
-        vertex, faces = [], []
-        with open(filename) as f:
-            for line in f:
-                if line.startswith('v '):
-                    vertex.append([float(i) for i in line.split()[1:]] + [1])
-                elif line.startswith('f'):
-                    faces_ = line.split()[1:]
-                    faces.append([int(face_.split('/')[0]) - 1 for face_ in faces_])
-        return Object3D(self, vertex, faces)
+        self.object = Object3D(self)
+        self.object.translate([0.2, 0.4, 0.2])
+        self.object.rotate_y(math.pi / 6)
 
     def draw(self):
         self.screen.fill(pg.Color('darkslategray'))
@@ -38,7 +28,6 @@ class SoftwareRender:
     def run(self):
         while True:
             self.draw()
-            self.camera.control()
             [exit() for i in pg.event.get() if i.type == pg.QUIT]
             pg.display.set_caption(str(self.clock.get_fps()))
             pg.display.flip()
